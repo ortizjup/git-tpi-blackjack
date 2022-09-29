@@ -4,17 +4,21 @@
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
 }
 
 .mostrar {
     z-index: 2;
     position: relative;
-    justify-content: center;
-    text-align: center;
-    padding: 2%;
+    padding: 1%;
 }
 
 h1 {
-    color: white;
+    color: rgb(0, 0, 0);
+}
+
+.mostrarCentrado {
+    z-index: 2;
+    position: relative;
+    text-align: center;
+    padding: 1%;
 }
