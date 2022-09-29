@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-home',
@@ -13,4 +14,9 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.video = '/assets/img/blackjackIntro.mp4'
   }
+
+  alertaMantenimiento(){
+    Swal.fire('Perdon, este modulo esta en desarrollo')
+  }
+
 }

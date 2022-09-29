@@ -5,6 +5,7 @@ import { CrupierComponent } from '../crupier/crupier.component';
 import { JugadorComponent } from '../jugador/jugador.component';
 import { CartaService } from '../../../services/carta.service';
 import swal from 'sweetalert2';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-mesa',
@@ -16,6 +17,8 @@ export class MesaComponent implements OnInit {
 
   cartas!: ICarta[];
   jugadorScore: number = 0;
+  jugadorEstado: string = "activo";
+
   @ViewChild(CrupierComponent) crupier!: CrupierComponent;
   @ViewChild(JugadorComponent) jugador!: JugadorComponent;
   private subscription: Subscription = new Subscription();
@@ -46,7 +49,15 @@ export class MesaComponent implements OnInit {
   }
 
   jugadorSolicitadNuevaCarta(cartasJugador: ICarta[]) : void {
-    this.enviarNuevaCartaJugador();
+    if(this.jugadorScore>21 || this.jugadorEstado == "inactivo" ){
+      Swal.fire({
+        icon: 'error',
+        title: 'IMPOSIBLE',
+        text: 'Las reglas no permiten que solicites mas cartas!',
+      })                                                                                                                        
+    } else{                                                      
+      this.enviarNuevaCartaJugador();
+    } 
   }
 
   updateJugadorSecore(score: number) : void{
@@ -55,9 +66,16 @@ export class MesaComponent implements OnInit {
   }
   
   juegadorSeRetiraDelJuego(cartas: ICarta[]) : void {
+    if(this.jugadorScore == 0){
+      Swal.fire({
+        icon: 'error',
+        title: '¿MIEDO?',
+        text: 'Aun no tienes ninguna carta!',
+      })   
+    } else{
     swal.fire({
       title: 'Esta seguro?',
-      text: "Esta seguro de terminar esta partida!",
+      text: "¿Esta seguro de retirarse de esta partida?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -66,13 +84,18 @@ export class MesaComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         //TODO: end crupier
+        this.jugadorEstado = "inactivo";
         this.checkGrameStatus(this.jugadorScore);
       }
     })
   }
+  }
 
   jugadorStartNewGame(any: any) : void {
     //this.crupier.initializeCrupier(carta);
+    //this.jugadorScore = 0;
+    //this.jugadorEstado="activo";
+    //this.cartas = [];
   }
 
   checkGrameStatus(score: number) : void {

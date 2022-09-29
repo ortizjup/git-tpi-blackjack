@@ -42,7 +42,10 @@ export class CrupierComponent implements OnInit {
         icon: 'error',
         title: 'Oops...',
         text: 'Perdiste la partida! Superaste los 21 puntos!',
-      });
+      }
+      
+      
+      );
     }
 
     if(this.score == 21){
