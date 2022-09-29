@@ -1,11 +1,11 @@
 <div class="container">
-<div class="col-12">
-    <h1>Crupier - Puntaje: {{this.score}}</h1>
-    <hr>
-    <div class="row">
-        <div class="col-2  mt-15" *ngFor="let carta of cartasCrupier"  >
-            <app-carta class="col-2" [carta]="carta"></app-carta>
+    <div class="col-12">
+        <h1>Crupier - Puntaje: {{this.score}}</h1>
+        <hr>
+        <div class="row">
+            <div class="col-2  mt-15" *ngFor="let carta of cartasCrupier">
+                <app-carta class="col-2" [carta]="carta"></app-carta>
+            </div>
         </div>
     </div>
 </div>
- 

@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
   }
 
   alertaMantenimiento(){
-    Swal.fire('Perdon, este modulo esta en desarrollo')
+    Swal.fire('Perdón, este modulo esta en desarrollo')
   }
 
 }
