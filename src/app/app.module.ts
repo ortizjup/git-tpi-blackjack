@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReglasComponent } from './pages/reglas/reglas.component';
 import { ListaComponent } from './pages/lista/lista.component';
 import { HomeComponent } from './pages/home/home.component';
+import { CartaComponent } from './pages/black-jack/carta/carta.component';
 
 
 
@@ -22,7 +23,8 @@ import { HomeComponent } from './pages/home/home.component';
     HomeComponent,
     ReglasComponent,
     ListaComponent,
-    HomeComponent
+    HomeComponent,
+    CartaComponent
   ],
   imports: [
     BrowserModule,
