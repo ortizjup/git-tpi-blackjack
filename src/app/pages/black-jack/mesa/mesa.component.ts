@@ -5,6 +5,7 @@ import { CrupierComponent } from '../crupier/crupier.component';
 import { JugadorComponent } from '../jugador/jugador.component';
 import { CartaService } from '../../../services/carta.service';
 import swal from 'sweetalert2';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-mesa',
@@ -46,7 +47,15 @@ export class MesaComponent implements OnInit {
   }
 
   jugadorSolicitadNuevaCarta(cartasJugador: ICarta[]) : void {
-    this.enviarNuevaCartaJugador();
+    if(this.jugadorScore>21 /* ||  jugadorSeRetiraDelJuego(true)  */ ){
+      Swal.fire({
+        icon: 'error',
+        title: 'IMPOSIBLE',
+        text: 'Las reglas no permiten que solicites mas cartas!',
+      })                                                                                                                        
+    } else{                                                      
+      this.enviarNuevaCartaJugador();
+    } 
   }
 
   updateJugadorSecore(score: number) : void{
@@ -57,7 +66,7 @@ export class MesaComponent implements OnInit {
   juegadorSeRetiraDelJuego(cartas: ICarta[]) : void {
     swal.fire({
       title: 'Esta seguro?',
-      text: "Esta seguro de terminar esta partida!",
+      text: "¿Esta seguro de retirarse de esta partida?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
