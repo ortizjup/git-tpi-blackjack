@@ -40,7 +40,7 @@ export class MesaComponent implements OnInit {
   }
 
   enviarNuevaCartaJugador() : void {
-    let numeroCarta = Math.floor(Math.random() * (36 - 1 + 1) + 1);
+    let numeroCarta = Math.floor(Math.random() * (52 - 1 + 1) + 1);
     let carta = this.cartas.find(x => x.identificador == numeroCarta) as ICarta;
     this.jugador.setNuevaCarta(carta);
   }
@@ -72,7 +72,7 @@ export class MesaComponent implements OnInit {
   }
 
   jugadorStartNewGame(any: any) : void {
-    //this.crupier.initializeCrupier();
+    //this.crupier.initializeCrupier(carta);
   }
 
   checkGrameStatus(score: number) : void {
