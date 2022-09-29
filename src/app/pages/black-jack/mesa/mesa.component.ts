@@ -14,4 +14,8 @@ export class MesaComponent implements OnInit {
 
   ngOnDestroy(): void {
   }
+
+  getNumberoCarta() : number {
+    return Math.floor(Math.random() * (1 - 43 + 1) + 1);
+  }
 }

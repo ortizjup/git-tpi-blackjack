@@ -1,6 +1,11 @@
 <div class="container">
- <div class="row">
-    <div *ngFor="let carta of cartas">
-        <app-carta [carta]="carta"></app-carta>
+<div class="col-12">
+    <h1>Crupier</h1>
+    <hr>
+    <div class="row">
+        <div class="col-2" *ngFor="let carta of cartasCrupier"  >
+            <app-carta class="col-2" [carta]="carta"></app-carta>
+        </div>
     </div>
 </div>
+ 
