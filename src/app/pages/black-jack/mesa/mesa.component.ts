@@ -17,6 +17,8 @@ export class MesaComponent implements OnInit {
 
   cartas!: ICarta[];
   jugadorScore: number = 0;
+  jugadorEstado: string = "activo";
+
   @ViewChild(CrupierComponent) crupier!: CrupierComponent;
   @ViewChild(JugadorComponent) jugador!: JugadorComponent;
   private subscription: Subscription = new Subscription();
@@ -47,7 +49,7 @@ export class MesaComponent implements OnInit {
   }
 
   jugadorSolicitadNuevaCarta(cartasJugador: ICarta[]) : void {
-    if(this.jugadorScore>21 /* ||  jugadorSeRetiraDelJuego(true)  */ ){
+    if(this.jugadorScore>21 || this.jugadorEstado == "inactivo" ){
       Swal.fire({
         icon: 'error',
         title: 'IMPOSIBLE',
@@ -75,6 +77,7 @@ export class MesaComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         //TODO: end crupier
+        this.jugadorEstado = "inactivo";
         this.checkGrameStatus(this.jugadorScore);
       }
     })
