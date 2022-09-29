@@ -12,7 +12,8 @@ import swal from 'sweetalert2';
   styleUrls: ['./mesa.component.css']
 })
 export class MesaComponent implements OnInit {
-  
+  fondo = '../../../../assets/img/background/Pano-transformedd.jpg';
+
   cartas!: ICarta[];
   jugadorScore: number = 0;
   @ViewChild(CrupierComponent) crupier!: CrupierComponent;

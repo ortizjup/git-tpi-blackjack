@@ -1,7 +1,7 @@
 import { Output, EventEmitter, Component, OnInit } from '@angular/core';
 import { ICarta } from 'src/app/interfaces/i-carta';
 import { CartaService } from '../../../services/carta.service';
-import swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-jugador',
