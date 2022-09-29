@@ -55,9 +55,9 @@ export class CartaService {
             nombreCarta = "Q";
           }else if(j == 12){
             nombreCarta = "K";
-          }else if(j == 13){
-            nombreCarta = "A";
-          }else if(j == 14){
+          }else if(j == 13){   //
+            nombreCarta = "A"; //aca se deberia sacar la linea de codigo o poner ¿j==1?, pero no estoy seguro ya que mas abajo (linea 64)
+          }else if(j == 14){   //haces el j==1 y le das el valor "1 y 10"... 
             nombreCarta = "J";
           }
 
