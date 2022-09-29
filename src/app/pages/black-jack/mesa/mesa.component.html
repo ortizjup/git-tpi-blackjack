@@ -1,4 +1,4 @@
-<div>
-    <app-crupier [numeroCarta]="this.getNumberoCarta()"></app-crupier>
-    <app-jugador [numeroCarta]="this.getNumberoCarta()"></app-jugador>
+<div class="container">
+    <app-crupier></app-crupier>
+    <app-jugador (solicitarCartaEventEmitter)="jugadorSolicitadNuevaCarta($event)" (checkGameStatusEventEmitter)="updateJugadorSecore($event)" (terminarJuegoEventEmitter)="juegadorSeRetiraDelJuego($event)" (starNetGameEventEmimitter)="jugadorStartNewGame($event)"></app-jugador>
 </div>

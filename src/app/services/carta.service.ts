@@ -22,6 +22,7 @@ export class CartaService {
   fillArray() : ICarta[] {
     let cartas: Array<ICarta> = [];
     let totalCats = 4;
+    let index = 1;
     //Iteracion 1: Diamantes
     //Iteracion 2: Pica
     //Iteracion 3: Trebol
@@ -47,29 +48,30 @@ export class CartaService {
 
         let categoria = {id: i, descripcion: descripcion, codigo: codigo} as ICategoriaCarta;
 
-        for(let j = 1; j < 14; j++){
+        for(let j = 1; j < 13; j++){
           let valores = [];
           let nombreCarta = null;
-          
-          if(j == 11){
+
+          if(j == 1){
+            nombreCarta = "A";
+          }else if(j == 11){
             nombreCarta = "Q";
           }else if(j == 12){
             nombreCarta = "K";
-          }else if(j == 13){   //
-            nombreCarta = "A"; //aca se deberia sacar la linea de codigo o poner ¿j==1?, pero no estoy seguro ya que mas abajo (linea 64)
-          }else if(j == 14){   //haces el j==1 y le das el valor "1 y 10"... 
+          }else if(j == 13){   //haces el j==1 y le das el valor "1 y 10"... 
             nombreCarta = "J";
           }
 
           if(j == 1){
             valores = [1, 10];
           }else if(j >= 2 && j <= 9){
-            valores = [i];
+            valores = [j];
           }else{
             valores = [10];
           }
 
-          cartas.push({id: j, numero: j, nombre: nombreCarta, valores: valores, categoriaId: j, categoria:  categoria} as ICarta);
+          cartas.push({id: index, identificador: index, numero: j, nombre: nombreCarta, valores: valores, categoriaId: i, categoria:  categoria} as ICarta);
+          index++;
       }
     }  
     return cartas;

@@ -14,6 +14,6 @@ export class CartaComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.pathImagenCarta = `../../../../assets/img/cards/${this.carta.id}${this.carta.categoria.codigo}.jpg`;
+    this.pathImagenCarta = `../../../../assets/img/cards/${this.carta.nombre != null ? this.carta.nombre : this.carta.numero}${this.carta.categoria.codigo}.jpg`;
   }
 }

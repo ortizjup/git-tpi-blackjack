@@ -1,7 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Output, EventEmitter, Component, OnInit } from '@angular/core';
 import { ICarta } from 'src/app/interfaces/i-carta';
 import { CartaService } from '../../../services/carta.service';
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-jugador',
@@ -10,27 +10,43 @@ import { CartaService } from '../../../services/carta.service';
 })
 export class JugadorComponent implements OnInit {
   
-  cartas!: ICarta[];
-  cartasJugador!: ICarta[];
-  @Input() numeroCarta: number = 0;
-  private subscription: Subscription = new Subscription();
+  cartasJugador: Array<ICarta> = [];
+  score: number = 0;
+  @Output() solicitarCartaEventEmitter = new EventEmitter<ICarta[]>();
+  @Output() terminarJuegoEventEmitter = new EventEmitter<ICarta[]>();
+  @Output() checkGameStatusEventEmitter = new EventEmitter<number>();
+  @Output() starNetGameEventEmimitter = new EventEmitter<any>();
 
   constructor(private cartaService: CartaService) { }
 
-  ngOnInit(): void {
-    this.loadCartas();
+  ngOnInit() : void {
   }
 
   ngOnDestroy(): void {
-   this.subscription.unsubscribe();
   }
 
-  loadCartas() : void{
-    this.subscription.add(
-      this.cartaService.cartaObservable.subscribe({
-        next: (result) => { this.cartas = result },
-        error: (error) => {console.log(error)} 
-      })
-    )
+  setNuevaCarta(carta: ICarta) : void {
+    this.cartasJugador.push(carta);
+    this.updateScore();
+    this.checkGameStatusEventEmitter.emit(this.score);
+  }
+
+  updateScore() : void {
+    this.score = 0;
+    this.cartasJugador.forEach((x) => {
+      this.score += x.valores[0];
+    });
+  }
+
+  solicitarNuevaCarta() : void{
+    this.solicitarCartaEventEmitter.emit(this.cartasJugador);
+  }
+
+  retirarseDelJuego() : void {
+    this.terminarJuegoEventEmitter.emit(this.cartasJugador);
+  }
+
+  startNewGame() : void {
+    this.starNetGameEventEmimitter.emit();
   }
 }

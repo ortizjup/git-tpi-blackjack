@@ -11,6 +11,7 @@ video {
     height: 100%;
     object-fit: cover;
 }
+
 .capa {
     position: absolute;
     top: 0;

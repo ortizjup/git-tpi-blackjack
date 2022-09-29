@@ -1,11 +1,23 @@
 <div class="container">
     <div class="col-12">
-        <h1>Jugador</h1>
+        <h1>Jugador - Puntaje: {{this.score}}</h1>
         <hr>
         <div class="row">
-            <div class="col-2" *ngFor="let carta of cartasJugador"  >
+            <div class="col-2 mt-15" *ngFor="let carta of cartasJugador"  >
                 <app-carta class="col-2" [carta]="carta"></app-carta>
             </div>
         </div>
+        <div class="row mt-15">
+            <div class="col-4 center">
+                <div type="button" class="btn btn-primary" (click)="solicitarNuevaCarta()">Solicitar Nueva Carta</div>
+            </div>
+            <div class="col-4 center">
+                <div type="button" class="btn btn-warning" (click)="retirarseDelJuego()">Retirarse de la partida</div>
+            </div>
+            <div class="col-4 center">
+                <div type="button" class="btn btn-success" (click)="startNewGame()">Iniciar Nueva Partida</div>
+            </div>
+        </div>
     </div>
+</div>
      

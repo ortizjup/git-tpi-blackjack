@@ -1,7 +1,7 @@
-import { Component, OnInit, Input} from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 import { ICarta } from 'src/app/interfaces/i-carta';
 import { CartaService } from '../../../services/carta.service';
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-crupier',
@@ -10,27 +10,49 @@ import { CartaService } from '../../../services/carta.service';
 })
 export class CrupierComponent implements OnInit {
 
-  cartas!: ICarta[];
-  cartasCrupier!: ICarta[];
-  @Input() numeroCarta: number = 0;
-  private subscription: Subscription = new Subscription();
-
+  cartasCrupier: Array<ICarta> = [];
+  score: number = 0;
   constructor(private cartaService:CartaService) { }
 
   ngOnInit(): void {
-    this.loadCartas();
   }
 
   ngOnDestroy(): void {
-   this.subscription.unsubscribe();
   }
 
-  loadCartas() : void{
-    this.subscription.add(
-      this.cartaService.cartaObservable.subscribe({
-        next: (result) => { this.cartas = result },
-        error: (error) => {console.log(error)} 
-      })
-    )
+  initializeCrupier(carta: ICarta) : void {
+    this.cartasCrupier.push(carta);
+    this.updateScore();   
+    this.checkGrameStatus(); 
+  }
+
+  updateScore() : void {
+    this.cartasCrupier.forEach((x) => {
+      this.score += x.valores[0];
+    });
+  }
+
+  setNuevaCarta(carta: ICarta) : void{
+    console.log(carta);
+  }
+
+  checkGrameStatus() : void {
+    if(this.score > 21){
+      swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Perdiste la partida! Superaste los 21 puntos!',
+      });
+    }
+
+    if(this.score == 21){
+      swal.fire({
+        icon: 'success',
+        title: 'Black Jack!',
+        text: 'Ganaste la partida...',
+        showConfirmButton: false,
+        timer: 1500
+      });
+    }
   }
 }
