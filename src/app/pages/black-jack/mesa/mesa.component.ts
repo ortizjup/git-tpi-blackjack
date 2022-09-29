@@ -66,6 +66,13 @@ export class MesaComponent implements OnInit {
   }
   
   juegadorSeRetiraDelJuego(cartas: ICarta[]) : void {
+    if(this.jugadorScore == 0){
+      Swal.fire({
+        icon: 'error',
+        title: '¿MIEDO?',
+        text: 'Aun no tienes ninguna carta!',
+      })   
+    } else{
     swal.fire({
       title: 'Esta seguro?',
       text: "¿Esta seguro de retirarse de esta partida?",
@@ -82,8 +89,13 @@ export class MesaComponent implements OnInit {
       }
     })
   }
+  }
 
   jugadorStartNewGame(any: any) : void {
+    //this.jugadorScore = 0;
+    //this.jugadorEstado="activo";
+    //this.cartas = [];
+
     //this.crupier.initializeCrupier();
   }
 
