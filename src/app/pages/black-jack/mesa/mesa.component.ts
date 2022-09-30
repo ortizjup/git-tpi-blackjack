@@ -49,7 +49,7 @@ export class MesaComponent implements OnInit {
   }
 
   jugadorSolicitadNuevaCarta(cartasJugador: ICarta[]) : void {
-    if(this.jugadorScore>21 || this.jugadorEstado == "inactivo" ){
+    if(this.jugadorScore >= 21 || this.jugadorEstado == "inactivo" ){
       Swal.fire({
         icon: 'error',
         title: 'IMPOSIBLE',
@@ -92,6 +92,8 @@ export class MesaComponent implements OnInit {
   }
 
   jugadorStartNewGame(any: any) : void {
+    window.location.reload();  //esto es momentaneo en segunda entrega pide algo (no me quiero extender)
+                               // que no permite que hagamos esta gronchada
     //this.jugadorScore = 0;
     //this.jugadorEstado="activo";
     //this.cartas = [];
@@ -103,7 +105,7 @@ export class MesaComponent implements OnInit {
     if(score > 21){
       swal.fire({
         icon: 'error',
-        title: 'Oops...',
+        title: 'Que mala suerte!!!',
         text: 'Perdiste la partida! Superaste los 21 puntos!',
       });
     }
