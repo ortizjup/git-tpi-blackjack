@@ -55,9 +55,13 @@ export class MesaComponent implements OnInit {
         title: 'IMPOSIBLE',
         text: 'Las reglas no permiten que solicites mas cartas!',
       })                                                                                                                        
-    } else{                                                      
+    } else if (this.jugadorScore === 0){                                                      
       this.enviarNuevaCartaJugador();
-    } 
+      this.enviarNuevaCartaJugador();
+      this.jugador.separarJuego();
+    } else {
+      this.enviarNuevaCartaJugador();
+    }
   }
 
   updateJugadorSecore(score: number) : void{
@@ -73,22 +77,22 @@ export class MesaComponent implements OnInit {
         text: 'Aun no tienes ninguna carta!',
       })   
     } else{
-    swal.fire({
-      title: 'Esta seguro?',
-      text: "¿Esta seguro de retirarse de esta partida?",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Si!'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        //TODO: end crupier
-        this.jugadorEstado = "inactivo";
-        this.checkGrameStatus(this.jugadorScore);
-      }
-    })
-  }
+      swal.fire({
+        title: 'Esta seguro?',
+        text: "¿Esta seguro de retirarse de esta partida?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          //TODO: end crupier
+          this.jugadorEstado = "inactivo";
+          this.checkGrameStatus(this.jugadorScore);
+        }
+      })
+    }
   }
 
   jugadorStartNewGame(any: any) : void {
