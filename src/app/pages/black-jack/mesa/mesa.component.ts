@@ -113,8 +113,8 @@ export class MesaComponent implements OnInit {
     if(score == 21){
       swal.fire({
         icon: 'success',
-        title: 'Black Jack!',
-        text: 'Ganaste la partida...',
+        title: 'BlackJack!',
+        text: 'Haz hecho un BlackJack, tienes mas posibilidades de ganar...',
         showConfirmButton: false,
         timer: 1500
       });

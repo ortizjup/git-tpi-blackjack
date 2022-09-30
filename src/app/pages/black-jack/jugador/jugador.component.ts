@@ -20,9 +20,11 @@ export class JugadorComponent implements OnInit {
   constructor(private cartaService: CartaService) { }
 
   ngOnInit() : void {
+    
   }
 
   ngOnDestroy(): void {
+   
   }
 
   setNuevaCarta(carta: ICarta) : void {
@@ -37,6 +39,8 @@ export class JugadorComponent implements OnInit {
       this.score += x.valores[0];
     });
   }
+
+  
 
   solicitarNuevaCarta() : void{
     this.solicitarCartaEventEmitter.emit(this.cartasJugador);
