@@ -7,7 +7,6 @@ import swal from 'sweetalert2';
 import { ICrupier } from '../../../interfaces/i-crupier';
 import { IJugador } from '../../../interfaces/i-jugador';
 import { IswalMessageCommunicationDto } from '../../../interfaces/dtos/iswal-message-communication-dto';
-import { icon } from '@fortawesome/fontawesome-svg-core';
 
 @Component({
   selector: 'app-mesa',
@@ -43,14 +42,6 @@ export class MesaComponent implements OnInit {
     this.checkGrameStatus(this.jugador.score, this.crupier.score, this.jugador.score != 0 && this.crupier.score >= 17);
   }
 
-  solicitarNuevaCarta(param: any) : void {
-    if(this.jugador.score > 21 || this.jugador.score == 0){          
-      this.displayErrors("Las reglas no permiten que solicites mas cartas!", "Accion no permitida");                                                                                                        
-    } else {                                                      
-      this.jugadorComponent.solicitarNuevaCarta(1);
-    } 
-  }
-  
   terminarJuego(param: any) : void {
     swal.fire({
         title: 'Esta seguro?',

@@ -18,12 +18,12 @@ export class JugadorComponent implements OnInit {
   @Output() jugadorEventEmitter = new EventEmitter<IJugador>();
   @Output() startNewGameEventEmiter = new EventEmitter<any>();
   @Output() terminarJuegoEventEmitter = new EventEmitter<any>();
-  @Output() solictarNuevaCartaEventEmitter = new EventEmitter<any>();
   @Output() swalMessageEventEmitter = new EventEmitter<IswalMessageCommunicationDto>();
 
   constructor(private cartaService: CartaService) { }
 
   ngOnInit() : void {
+    
   }
 
   ngOnDestroy(): void {
