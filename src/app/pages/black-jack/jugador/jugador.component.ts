@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { CartaService } from '../../../services/carta.service';
 import { IJugador } from '../../../interfaces/i-jugador';
 import { IswalMessageCommunicationDto } from '../../../interfaces/dtos/iswal-message-communication-dto';
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-jugador',
@@ -45,8 +46,28 @@ export class JugadorComponent implements OnInit {
 
   setNuevaCarta(cartas: ICarta[]) : void {
     cartas.forEach(x => {
-      this.cartasJugador.push(x);
+      if(x.nombre == "A"){
+        swal.fire({
+          title: "Que valor quiere darle a las carta?",
+          showDenyButton: true,
+          showCancelButton: false,
+          confirmButtonText: "Diez (10)",
+          denyButtonText: "Uno (1)",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            x.valores.splice(x.valores.indexOf(1), 1);
+            this.cartasJugador.push(x);
+          } else if (result.isDenied) {
+            x.valores.splice(x.valores.indexOf(10), 1);
+            this.cartasJugador.push(x);
+          }
+          this.updateScore();
+        });
+      }else{
+        this.cartasJugador.push(x);
+      }
     });
+      
     this.updateScore();
   }
 

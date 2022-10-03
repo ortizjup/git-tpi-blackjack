@@ -4,6 +4,7 @@ import { ICarta } from 'src/app/interfaces/i-carta';
 import { CartaService } from '../../../services/carta.service';
 import { ICrupier } from '../../../interfaces/i-crupier';
 import { IswalMessageCommunicationDto } from '../../../interfaces/dtos/iswal-message-communication-dto';
+import { CrupierService } from '../../../services/crupier.service';
 
 @Component({
   selector: 'app-crupier',
@@ -18,7 +19,7 @@ export class CrupierComponent implements OnInit {
   @Output() crupierEmitter = new EventEmitter<ICrupier>();
   @Output() swalMessageEventEmitter = new EventEmitter<IswalMessageCommunicationDto>();
 
-  constructor(private cartaService: CartaService) {}
+  constructor(private cartaService: CartaService, private crupierService: CrupierService) {}
 
   ngOnInit(): void {
   }
@@ -45,9 +46,17 @@ export class CrupierComponent implements OnInit {
   setNuevaCarta(cartas: ICarta[], emitEvent: boolean = true) : void {
     let index = 1;
     cartas.forEach(x => {
+      if(x.nombre == "A"){
+        this.crupierService.getHazValue().subscribe({
+          next: (result) => { x.valores.splice(x.valores.indexOf(result), 1); },
+          error: (error) => { this.swalMessageEventEmitter.emit({message: error, title: "Oops...", icon: "error"} as IswalMessageCommunicationDto); }
+        });
+      }
+
       if(index == 2){
         x.showBack = true;
       }
+
       this.cartasCrupier.push(x);
       index++;
     });

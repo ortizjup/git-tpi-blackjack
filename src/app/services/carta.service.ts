@@ -35,9 +35,13 @@ export class CartaService {
       let cartas = new datasetprovider().fillArray();
       let retVal: Array<ICarta> = [];
       for(let i = 0; i < this.cantidad; i++){
-        let numeroCarta = Math.floor(Math.random() * (52 - 1 + 1) + 1);
+        let numeroCarta = this.randomIntFromInterval(1, 52);
         retVal.push(cartas.find(x => x.identificador == numeroCarta) as ICarta);
       }
       return retVal;
+  }
+
+  private randomIntFromInterval(min: number, max: number) { 
+    return Math.floor(Math.random() * (max - min + 1) + min)
   }
 }

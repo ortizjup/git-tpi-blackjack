@@ -41,7 +41,7 @@ export class datasetprovider {
                 nombreCarta = "Q";
               }else if(j == 12){
                 nombreCarta = "K";
-              }else if(j == 13){   //haces el j==1 y le das el valor "1 y 10"... 
+              }else if(j == 13){
                 nombreCarta = "J";
               }
     

@@ -3,10 +3,10 @@ import { Subscription } from 'rxjs';
 import { CrupierComponent } from '../crupier/crupier.component';
 import { JugadorComponent } from '../jugador/jugador.component';
 import { CartaService } from '../../../services/carta.service';
-import swal from 'sweetalert2';
 import { ICrupier } from '../../../interfaces/i-crupier';
 import { IJugador } from '../../../interfaces/i-jugador';
 import { IswalMessageCommunicationDto } from '../../../interfaces/dtos/iswal-message-communication-dto';
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-mesa',
@@ -67,6 +67,11 @@ export class MesaComponent implements OnInit {
   checkGrameStatus(jugadorScore: number, crupierScore: number, ready: boolean) : void {
     if(jugadorScore == 21){
       this.displaySuccess("¡Black Jack!", "¡Ganaste la partida!.");
+      this.resetMesa();
+    }
+
+    if(this.crupier.score == 21){
+      this.displayErrors("¡Crupier Black Jack!", "Perdiste la partida!.");
       this.resetMesa();
     }
     
