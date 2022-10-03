@@ -6,6 +6,13 @@
 position: relative;" routerLink="/inicio"><i class="fa-sharp fa-solid fa-delete-left"></i></button>
 </div>
 <div class="container mostrar">
-    <app-crupier></app-crupier>
-    <app-jugador (solicitarCartaEventEmitter)="jugadorSolicitadNuevaCarta($event)" (checkGameStatusEventEmitter)="updateJugadorSecore($event)" (terminarJuegoEventEmitter)="juegadorSeRetiraDelJuego($event)" (starNetGameEventEmimitter)="jugadorStartNewGame($event)"></app-jugador>
+    <app-crupier (crupierEmitter)="updateCrupier($event)"
+                 (swalMessageEventEmitter)="displaySwalMessage($event)">
+    </app-crupier>
+    <app-jugador (jugadorEventEmitter)="updateJugador($event)"
+                (startNewGameEventEmiter)="startNewGame($event)"
+                (terminarJuegoEventEmitter)="terminarJuego($event)"
+                (solictarNuevaCartaEventEmitter)="solicitarNuevaCarta($event)"
+                (swalMessageEventEmitter)="displaySwalMessage($event)">
+    </app-jugador>
 </div>

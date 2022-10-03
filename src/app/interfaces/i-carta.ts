@@ -5,6 +5,7 @@ export interface ICarta {
     numero: number;
     nombre: string; 
     valores: number[];
+    showBack: boolean;
     categoriaId: number;
     categoria: ICategoriaCarta;
 }

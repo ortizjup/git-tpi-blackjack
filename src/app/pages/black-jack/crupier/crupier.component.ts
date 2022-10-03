@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ICarta } from 'src/app/interfaces/i-carta';
 import { CartaService } from '../../../services/carta.service';
-import swal from 'sweetalert2';
+import { ICrupier } from '../../../interfaces/i-crupier';
+import { IswalMessageCommunicationDto } from '../../../interfaces/dtos/iswal-message-communication-dto';
 
 @Component({
   selector: 'app-crupier',
@@ -12,50 +14,70 @@ export class CrupierComponent implements OnInit {
 
   cartasCrupier: Array<ICarta> = [];
   score: number = 0;
-  constructor(private cartaService:CartaService) { }
+  private subscription: Subscription = new Subscription();
+  @Output() crupierEmitter = new EventEmitter<ICrupier>();
+  @Output() swalMessageEventEmitter = new EventEmitter<IswalMessageCommunicationDto>();
+
+  constructor(private cartaService: CartaService) {}
 
   ngOnInit(): void {
   }
 
   ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
-  initializeCrupier(carta: ICarta) : void {
-    this.cartasCrupier.push(carta);
-    this.updateScore();   
-    this.checkGrameStatus(); 
+  completeMinRequiredScore() : void {
+    while(this.score < 17) {
+      this.setCartaCrupier(1, false);
+    }
+    this.updateScore(true);
   }
 
-  updateScore() : void {
-    this.cartasCrupier.forEach((x) => {
-      this.score += x.valores[0];
-    });
+  setCartaCrupier(cantidad: number, emitEvent: boolean = true) : void {
+    this.subscription.add(
+      this.cartaService.solicitarCartas(cantidad).subscribe({
+      next: (results) => { this.setNuevaCarta(results, emitEvent) },
+      error: (error) => { this.swalMessageEventEmitter.emit({message: error, title: "Oops...", icon:"error"} as IswalMessageCommunicationDto); }
+    }));
   }
 
-  setNuevaCarta(carta: ICarta) : void{
-    console.log(carta);
-  }
-
-  checkGrameStatus() : void {
-    if(this.score > 21){
-      swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Perdiste la partida! Superaste los 21 puntos!',
+  setNuevaCarta(cartas: ICarta[], emitEvent: boolean = true) : void {
+    let index = 1;
+    cartas.forEach(x => {
+      if(index == 2){
+        x.showBack = true;
       }
-      
-      
-      );
-    }
+      this.cartasCrupier.push(x);
+      index++;
+    });
+    this.updateScore(emitEvent);   
+  }
 
-    if(this.score == 21){
-      swal.fire({
-        icon: 'success',
-        title: 'Black Jack!',
-        text: 'Ganaste la partida...',
-        showConfirmButton: false,
-        timer: 1500
-      });
+  updateScore(emitEvent: boolean = true) : void {
+    this.score = 0;
+    this.cartasCrupier.forEach((x) => {
+      this.score += !x.showBack ? x.valores[0] : 0;
+    });
+
+    if(emitEvent){
+      this.crupierEmitter.emit({id: 1, cartas: this.cartasCrupier, score: this.score } as ICrupier);
     }
+  }
+
+  swipeCard() : void {
+    if(this.cartasCrupier.some(x => x.showBack)){
+      let cartaCopy = {} as ICarta;
+      Object.assign(cartaCopy, this.cartasCrupier.find(x => x.showBack));
+      this.cartasCrupier.splice(this.cartasCrupier.indexOf(cartaCopy), 1);
+      cartaCopy.showBack = false;
+      this.cartasCrupier.push(cartaCopy);
+    }
+    this.updateScore();
+  }
+
+  resetCrupier() : void {
+    this.cartasCrupier = [];
+    this.updateScore(false);
   }
 }

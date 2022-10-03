@@ -3,6 +3,6 @@ export interface IJugador {
     id: number;
     nombre: string; 
     apellido: string; 
-    scoreMaximo: number;
+    score: number;
     cartas: ICarta[]
 }

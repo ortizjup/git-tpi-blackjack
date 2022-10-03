@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild} from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ICarta } from 'src/app/interfaces/i-carta';
 import { CrupierComponent } from '../crupier/crupier.component';
 import { JugadorComponent } from '../jugador/jugador.component';
 import { CartaService } from '../../../services/carta.service';
 import swal from 'sweetalert2';
-import Swal from 'sweetalert2';
+import { ICrupier } from '../../../interfaces/i-crupier';
+import { IJugador } from '../../../interfaces/i-jugador';
+import { IswalMessageCommunicationDto } from '../../../interfaces/dtos/iswal-message-communication-dto';
+import { icon } from '@fortawesome/fontawesome-svg-core';
 
 @Component({
   selector: 'app-mesa',
@@ -15,106 +17,134 @@ import Swal from 'sweetalert2';
 export class MesaComponent implements OnInit {
   fondo = '../../../../assets/img/background/Pano-transformedd.jpg';
 
-  cartas!: ICarta[];
-  jugadorScore: number = 0;
-  jugadorEstado: string = "activo";
-
-  @ViewChild(CrupierComponent) crupier!: CrupierComponent;
-  @ViewChild(JugadorComponent) jugador!: JugadorComponent;
+  crupier!: ICrupier;
+  jugador!: IJugador;
   private subscription: Subscription = new Subscription();
+  @ViewChild(CrupierComponent) crupierComponent!: CrupierComponent;
+  @ViewChild(JugadorComponent) jugadorComponent!: JugadorComponent;
   
   constructor(private cartaService: CartaService) { }
 
   ngOnInit(): void {
-    this.loadCartas();
+    this.crupier = {} as ICrupier;
+    this.jugador = {} as IJugador;
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 
-  loadCartas() : void{
-    this.subscription.add(
-      this.cartaService.cartaObservable.subscribe({
-        next: (results) => { this.cartas = results; console.log(results);},
-        error: (error) => {console.log(error)} 
-      })
-    )
+  updateCrupier(crupier: ICrupier) : void {
+     Object.assign(this.crupier, crupier);
+  }
+ 
+  updateJugador(jugador: IJugador) : void {
+    Object.assign(this.jugador, jugador);
+    this.checkGrameStatus(this.jugador.score, this.crupier.score, this.jugador.score != 0 && this.crupier.score >= 17);
   }
 
-  enviarNuevaCartaJugador() : void {
-    let numeroCarta = Math.floor(Math.random() * (52 - 1 + 1) + 1);
-    let carta = this.cartas.find(x => x.identificador == numeroCarta) as ICarta;
-    this.jugador.setNuevaCarta(carta);
-  }
-
-  jugadorSolicitadNuevaCarta(cartasJugador: ICarta[]) : void {
-    if(this.jugadorScore>21 || this.jugadorEstado == "inactivo" ){
-      Swal.fire({
-        icon: 'error',
-        title: 'IMPOSIBLE',
-        text: 'Las reglas no permiten que solicites mas cartas!',
-      })                                                                                                                        
-    } else{                                                      
-      this.enviarNuevaCartaJugador();
+  solicitarNuevaCarta(param: any) : void {
+    if(this.jugador.score > 21 || this.jugador.score == 0){          
+      this.displayErrors("Las reglas no permiten que solicites mas cartas!", "Accion no permitida");                                                                                                        
+    } else {                                                      
+      this.jugadorComponent.solicitarNuevaCarta(1);
     } 
   }
-
-  updateJugadorSecore(score: number) : void{
-    this.jugadorScore = score;
-    this.checkGrameStatus(this.jugadorScore);
-  }
   
-  juegadorSeRetiraDelJuego(cartas: ICarta[]) : void {
-    if(this.jugadorScore == 0){
-      Swal.fire({
-        icon: 'error',
-        title: '¿MIEDO?',
-        text: 'Aun no tienes ninguna carta!',
-      })   
-    } else{
+  terminarJuego(param: any) : void {
     swal.fire({
-      title: 'Esta seguro?',
-      text: "¿Esta seguro de retirarse de esta partida?",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Si!'
+        title: 'Esta seguro?',
+        text: "Esta por de finalizar la partida.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si!'
     }).then((result) => {
-      if (result.isConfirmed) {
-        //TODO: end crupier
-        this.jugadorEstado = "inactivo";
-        this.checkGrameStatus(this.jugadorScore);
-      }
-    })
-  }
+        if (result.isConfirmed) {
+          this.crupierComponent.swipeCard();
+          this.crupierComponent.completeMinRequiredScore();
+          setTimeout(() => this.checkGrameStatus(this.jugador.score, this.crupier.score, this.jugador.score != 0 && this.crupier.score != 0), 5000);
+    }});
   }
 
-  jugadorStartNewGame(any: any) : void {
-    //this.crupier.initializeCrupier(carta);
-    //this.jugadorScore = 0;
-    //this.jugadorEstado="activo";
-    //this.cartas = [];
+  startNewGame(any: any) : void {
+    this.crupierComponent.setCartaCrupier(2);
+    this.jugadorComponent.solicitarNuevaCarta(2);
   }
 
-  checkGrameStatus(score: number) : void {
-    if(score > 21){
-      swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Perdiste la partida! Superaste los 21 puntos!',
-      });
+  checkGrameStatus(jugadorScore: number, crupierScore: number, ready: boolean) : void {
+    if(jugadorScore == 21){
+      this.displaySuccess("¡Black Jack!", "¡Ganaste la partida!.");
+      this.resetMesa();
+    }
+    
+    if(jugadorScore > 21) {
+      this.displayErrors("¡Perdiste la partida! Superaste los 21 puntos.", "Oops...");
+      this.resetMesa();
     }
 
-    if(score == 21){
-      swal.fire({
-        icon: 'success',
-        title: 'Black Jack!',
-        text: 'Ganaste la partida...',
-        showConfirmButton: false,
-        timer: 1500
-      });
+    if(jugadorScore < crupierScore && ready){
+      this.displayErrors("¡Perdiste la partida!. El crupier tiene mas puntos.", "Oops..."); 
+      this.resetMesa();
+    }
+
+    if(jugadorScore > crupierScore && ready){
+      this.displaySuccess("¡Felicitaciones!.", "¡Ganaste la partida!.");
+      this.resetMesa();
+    }
+
+    if(jugadorScore == crupierScore && ready){
+      this.displayWarning("¡Tenes el mismo puntaje que el crupier!", "¡Empate!");
+      this.resetMesa();
     }
   }
+
+  resetMesa() : void {
+    this.crupierComponent.resetCrupier();
+    this.jugadorComponent.resetJugador();
+    this.jugador = {} as IJugador;
+    this.crupier = {} as ICrupier;
+  }
+
+  displaySwalMessage(dto: IswalMessageCommunicationDto) : void {
+     if(dto.icon == "error"){
+      this.displayErrors(dto.message, dto.title);
+     }
+
+     if(dto.icon = "warning"){
+      this.displayWarning(dto.message, dto.title);
+     }
+
+     if(dto.icon = "success"){
+      this.displaySuccess(dto.message, dto.title);
+     }
+  }
+
+  displayErrors(errorMessage: string, title: string) : void {
+    swal.fire({
+      icon: 'error',
+      title: title,
+      text: errorMessage,
+    });
+  }
+
+  displaySuccess(title: string, text: string) : void {
+    swal.fire({
+      icon: 'success',
+      title: title,
+      text: text,
+      timer: 1500
+    });
+  }
+
+  displayWarning(title: string, text: string) : void {
+    swal.fire({
+      icon: 'warning',
+      title: title,
+      text: text,
+      timer: 1500
+    });
+  }
+
 }

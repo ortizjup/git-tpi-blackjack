@@ -2,35 +2,42 @@ import { Injectable } from '@angular/core';
 import { ICarta } from '../interfaces/i-carta';
 import { ICategoriaCarta } from '../interfaces/i-categoria-carta';
 import { Observable, Observer } from 'rxjs';
-import { datasetprovider } from './datasetprovider';
+import { datasetprovider } from './data-source/datasetprovider';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartaService {
 
-  cantidad: number = 0;
-  cartasActuales: Array<ICarta> = [];
-
+  private cantidad: number = 0;
   constructor() { }
 
   getCartas() : Observable<ICarta[]>{
-      return this.cartaObservable;
+      return this.obtenerTodoElMasoObservable;
   }
   
-  solicitarCarta(cantidad: number, cartasActuales: ICarta[]) : Observable<ICarta[]>{
+  solicitarCartas(cantidad: number) : Observable<ICarta[]>{
     this.cantidad = cantidad;
-    this.cartasActuales = cartasActuales;
-    return this.cartaObservable;
+    return this.solicitarCartasObservable;
   }
 
-  cartaObservable: Observable<ICarta[]> = new Observable((observer) => {
+  private obtenerTodoElMasoObservable: Observable<ICarta[]> = new Observable((observer) => {
     observer.next(new datasetprovider().fillArray());
     observer.complete();
   });
 
-  solicitarCartaObservable: Observable<ICarta[]> = new Observable((observer) => {
-    observer.next();
+  private solicitarCartasObservable: Observable<ICarta[]> = new Observable((observer) => {
+    observer.next(this.getCartasRamdomByCantidad());
     observer.complete();
   });
+
+  private getCartasRamdomByCantidad() : ICarta[] {
+      let cartas = new datasetprovider().fillArray();
+      let retVal: Array<ICarta> = [];
+      for(let i = 0; i < this.cantidad; i++){
+        let numeroCarta = Math.floor(Math.random() * (52 - 1 + 1) + 1);
+        retVal.push(cartas.find(x => x.identificador == numeroCarta) as ICarta);
+      }
+      return retVal;
+  }
 }

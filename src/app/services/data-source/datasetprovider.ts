@@ -1,5 +1,5 @@
-import { ICarta } from "../interfaces/i-carta";
-import { ICategoriaCarta } from "../interfaces/i-categoria-carta";
+import { ICarta } from "../../interfaces/i-carta";
+import { ICategoriaCarta } from "../../interfaces/i-categoria-carta";
 
 export class datasetprovider {
     fillArray() : ICarta[] {
