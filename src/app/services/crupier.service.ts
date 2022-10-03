@@ -19,7 +19,7 @@ export class CrupierService {
   
   private getValueOfHaz() : number {
       let ramdomNumber = this.randomIntFromInterval(1,100)%2;
-      return ramdomNumber == 0 ? 1 : 10;
+      return ramdomNumber == 0 ? 1 : 11;
   }
 
   randomIntFromInterval(min: number, max: number) { 

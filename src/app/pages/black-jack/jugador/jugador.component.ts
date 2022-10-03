@@ -51,14 +51,14 @@ export class JugadorComponent implements OnInit {
           title: "Que valor quiere darle a las carta?",
           showDenyButton: true,
           showCancelButton: false,
-          confirmButtonText: "Diez (10)",
+          confirmButtonText: "Once (11)",
           denyButtonText: "Uno (1)",
         }).then((result) => {
           if (result.isConfirmed) {
             x.valores.splice(x.valores.indexOf(1), 1);
             this.cartasJugador.push(x);
           } else if (result.isDenied) {
-            x.valores.splice(x.valores.indexOf(10), 1);
+            x.valores.splice(x.valores.indexOf(11), 1);
             this.cartasJugador.push(x);
           }
           this.updateScore();

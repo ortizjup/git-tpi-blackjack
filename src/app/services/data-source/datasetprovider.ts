@@ -46,7 +46,7 @@ export class datasetprovider {
               }
     
               if(j == 1){
-                valores = [1, 10];
+                valores = [1, 11];
               }else if(j >= 2 && j <= 9){
                 valores = [j];
               }else{

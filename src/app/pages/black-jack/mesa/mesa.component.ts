@@ -55,7 +55,7 @@ export class MesaComponent implements OnInit {
         if (result.isConfirmed) {
           this.crupierComponent.swipeCard();
           this.crupierComponent.completeMinRequiredScore();
-          setTimeout(() => this.checkGrameStatus(this.jugador.score, this.crupier.score, this.jugador.score != 0 && this.crupier.score != 0), 5000);
+          this.checkGrameStatus(this.jugador.score, this.crupier.score, this.jugador.score != 0 && this.crupier.score != 0);
     }});
   }
 
