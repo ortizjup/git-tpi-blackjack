@@ -9,10 +9,10 @@
         </div>
         <div class="row mt-15">
             <div class="col-4 center">
-                <button type="button" class="btn btn-primary" (click)="solicitarNuevaCarta(1)" [disabled]="this.score == 0">Solicitar Nueva Carta</button>
+                <button type="button" class="btn btn-primary" (click)="solicitarNuevaCarta(1)" [disabled]="this.score == 0 || this.juegoTerminado == true">Solicitar Nueva Carta</button>
             </div>
             <div class="col-4 center">
-                <button type="button" class="btn btn-warning" (click)="retirarseDelJuego()" [disabled]="this.score == 0">Retirarse de la partida</button>
+                <button type="button" class="btn btn-warning" (click)="retirarseDelJuego()" [disabled]="this.score == 0  || this.juegoTerminado == true">Retirarse de la partida</button>
             </div>
             <div class="col-4 center">
                 <button type="button" class="btn btn-success" (click)="startNewGame()" [disabled]="this.score > 0">Iniciar Nueva Partida</button>

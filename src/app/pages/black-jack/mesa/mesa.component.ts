@@ -53,15 +53,19 @@ export class MesaComponent implements OnInit {
         confirmButtonText: 'Si!'
     }).then((result) => {
         if (result.isConfirmed) {
+          this.jugadorComponent.juegoTerminado = true;
           this.crupierComponent.swipeCard();
           this.crupierComponent.completeMinRequiredScore();
-          this.checkGrameStatus(this.jugador.score, this.crupier.score, this.jugador.score != 0 && this.crupier.score != 0);
+          setTimeout(() => {
+            this.checkGrameStatus(this.jugador.score, this.crupier.score, this.jugador.score != 0 && this.crupier.score != 0)
+          }, 3000);
     }});
   }
 
   startNewGame(any: any) : void {
     this.crupierComponent.setCartaCrupier(2);
     this.jugadorComponent.solicitarNuevaCarta(2);
+    this.jugadorComponent.juegoTerminado = false;
   }
 
   checkGrameStatus(jugadorScore: number, crupierScore: number, ready: boolean) : void {
@@ -80,12 +84,12 @@ export class MesaComponent implements OnInit {
       this.resetMesa();
     }
 
-    if(jugadorScore < crupierScore && ready){
+    if(jugadorScore < crupierScore && crupierScore < 21 && ready){
       this.displayErrors("¡Perdiste la partida!. El crupier tiene mas puntos.", "Oops..."); 
       this.resetMesa();
     }
 
-    if(jugadorScore > crupierScore && ready){
+    if(jugadorScore > crupierScore && ready || crupierScore > 21 && ready){
       this.displaySuccess("¡Felicitaciones!.", "¡Ganaste la partida!.");
       this.resetMesa();
     }

@@ -14,6 +14,8 @@ import swal from 'sweetalert2';
 export class JugadorComponent implements OnInit {
   
   cartasJugador: Array<ICarta> = [];
+  juegoSeparado: Array<ICarta> = [];
+  juegoTerminado: boolean = false;
   score: number = 0;
   private subscription: Subscription = new Subscription();
   @Output() jugadorEventEmitter = new EventEmitter<IJugador>();
