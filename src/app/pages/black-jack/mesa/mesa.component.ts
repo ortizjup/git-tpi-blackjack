@@ -70,27 +70,27 @@ export class MesaComponent implements OnInit {
 
   checkGrameStatus(jugadorScore: number, crupierScore: number, ready: boolean) : void {
     if(jugadorScore == 21){
-      this.displaySuccess("¡Black Jack!", "¡Ganaste la partida!.");
+      this.displaySuccess("¡Black Jack!", "¡Ganaste!");
       this.resetMesa();
     }
 
     if(this.crupier.score == 21){
-      this.displayErrors("¡Crupier Black Jack!", "Perdiste la partida!.");
+      this.displayErrors("¡El Crupier hizo Black Jack!", "¡Perdiste!");
       this.resetMesa();
     }
     
     if(jugadorScore > 21) {
-      this.displayErrors("¡Perdiste la partida! Superaste los 21 puntos.", "Oops...");
+      this.displayErrors("¡Perdiste la partida! Superaste los 21 puntos.",  "¡Perdiste!");
       this.resetMesa();
     }
 
     if(jugadorScore < crupierScore && crupierScore < 21 && ready){
-      this.displayErrors("¡Perdiste la partida!. El crupier tiene mas puntos.", "Oops..."); 
+      this.displayErrors("¡Perdiste la partida!. El crupier tiene mas puntos.", "¡Perdiste!"); 
       this.resetMesa();
     }
 
     if(jugadorScore > crupierScore && ready || crupierScore > 21 && ready){
-      this.displaySuccess("¡Felicitaciones!.", "¡Ganaste la partida!.");
+      this.displaySuccess("¡Felicitaciones!.", "¡Ganaste!");
       this.resetMesa();
     }
 
