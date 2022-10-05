@@ -21,8 +21,8 @@ export class MesaComponent implements OnInit {
   private subscription: Subscription = new Subscription();
   @ViewChild(CrupierComponent) crupierComponent!: CrupierComponent;
   @ViewChild(JugadorComponent) jugadorComponent!: JugadorComponent;
-  
-  constructor(private cartaService: CartaService) { }
+
+ 
 
   ngOnInit(): void {
     this.crupier = {} as ICrupier;
