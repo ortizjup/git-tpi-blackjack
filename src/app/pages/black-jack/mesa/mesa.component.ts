@@ -53,50 +53,50 @@ export class MesaComponent implements OnInit {
         confirmButtonText: 'Si!'
     }).then((result) => {
         if (result.isConfirmed) {
-          this.jugadorComponent.juegoTerminado = true;
+          this.jugadorComponent.juegoEnCurso = false;
           this.crupierComponent.swipeCard();
           this.crupierComponent.completeMinRequiredScore();
           setTimeout(() => {
             this.checkGrameStatus(this.jugador.score, this.crupier.score, this.jugador.score != 0 && this.crupier.score != 0)
-          }, 3000);
+          }, 2000);
     }});
   }
 
   startNewGame(any: any) : void {
     this.crupierComponent.setCartaCrupier(2);
     this.jugadorComponent.solicitarNuevaCarta(2);
-    this.jugadorComponent.juegoTerminado = false;
+    this.jugadorComponent.juegoEnCurso = true;
   }
 
   checkGrameStatus(jugadorScore: number, crupierScore: number, ready: boolean) : void {
-    if(jugadorScore == 21){
-      this.displaySuccess("¡Black Jack!", "¡Ganaste!");
-      this.resetMesa();
-    }
-
-    if(this.crupier.score == 21){
-      this.displayErrors("¡El Crupier hizo Black Jack!", "¡Perdiste!");
-      this.resetMesa();
-    }
     
     if(jugadorScore > 21) {
+      this.jugadorComponent.juegoEnCurso = false;
       this.displayErrors("¡Perdiste la partida! Superaste los 21 puntos.",  "¡Perdiste!");
       this.resetMesa();
     }
 
     if(jugadorScore < crupierScore && crupierScore < 21 && ready){
-      this.displayErrors("¡Perdiste la partida!. El crupier tiene mas puntos.", "¡Perdiste!"); 
+      if(this.crupier.score == 21 && ready){
+        this.displayErrors("¡El Crupier hizo Black Jack!", "¡Perdiste!");
+      } else {
+        this.displayErrors("¡Perdiste la partida!. El crupier tiene mas puntos.", "¡Perdiste!");
+      }       
       this.resetMesa();
     }
 
     if(jugadorScore > crupierScore && ready || crupierScore > 21 && ready){
-      this.displaySuccess("¡Felicitaciones!.", "¡Ganaste!");
+      if(jugadorScore == 21 && ready){
+        this.displaySuccess("¡Black Jack!", "¡Ganaste!");
+      } else {
+        this.displaySuccess("¡Felicitaciones!.", "¡Ganaste!");
+      }      
       this.resetMesa();
     }
 
     if(jugadorScore == crupierScore && ready){
-      this.displayWarning("¡Tenes el mismo puntaje que el crupier!", "¡Empate!");
-      this.resetMesa();
+      this.displayWarning("¡Tenes el mismo puntaje que el crupier!", "¡Empate!"); 
+      this.resetMesa();     
     }
   }
 

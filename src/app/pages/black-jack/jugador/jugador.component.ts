@@ -15,7 +15,7 @@ export class JugadorComponent implements OnInit {
   
   cartasJugador: Array<ICarta> = [];
   juegoSeparado: Array<ICarta> = [];
-  juegoTerminado: boolean = false;
+  juegoEnCurso: boolean = false;
   score: number = 0;
   private subscription: Subscription = new Subscription();
   @Output() jugadorEventEmitter = new EventEmitter<IJugador>();
@@ -50,7 +50,7 @@ export class JugadorComponent implements OnInit {
     cartas.forEach(x => {
       if(x.nombre == "A"){
         swal.fire({
-          title: "Que valor quiere darle a las carta?",
+          title: "Que valor quiere darle a la carta?",
           showDenyButton: true,
           showCancelButton: false,
           confirmButtonText: "Once (11)",
@@ -69,8 +69,9 @@ export class JugadorComponent implements OnInit {
         this.cartasJugador.push(x);
       }
     });
-      
+
     this.updateScore();
+    
   }
 
   updateScore(emitEvent: boolean = true) : void {
