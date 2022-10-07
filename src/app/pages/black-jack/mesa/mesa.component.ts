@@ -14,7 +14,7 @@ import swal from 'sweetalert2';
   styleUrls: ['./mesa.component.css']
 })
 export class MesaComponent implements OnInit {
-  fondo = '../../../../assets/img/background/Pano-transformedd.jpg';
+  fondo = 'https://res.cloudinary.com/dfyevp7g4/image/upload/v1665177849/blackjack/background /Pano.jpg';
 
   crupier!: ICrupier;
   jugador!: IJugador;
